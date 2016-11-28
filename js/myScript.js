@@ -1,5 +1,5 @@
 var width, height, center;
-var points = 0;
+var points = 1;
 var smooth = true;
 var path = new Path({
     fillColor: 'black'
@@ -10,10 +10,10 @@ initializePath();
 
 
 function addPoint () {
-    point++;
-    initializePath();
-    
+    points++;
+    initializePath();   
 }
+
 function initializePath() {
     center = view.center;
     width = view.size.width;
@@ -24,8 +24,10 @@ function initializePath() {
         var point = new Point(width / points * i, center.y);
         path.add(point);
     }
+    path.add(view.bounds.topRight);
     path.add(view.bounds.bottomRight);
     path.fullySelected = true;
+    path.fillColor('red');
 }
 
 function onFrame(event) {
@@ -45,15 +47,16 @@ function onMouseMove(event) {
 }
 
 function onMouseDown(event) {
-    smooth = !smooth;
-    if (!smooth) {
-        // If smooth has been turned off, we need to reset
-        // the handles of the path:
-        for (var i = 0, l = path.segments.length; i < l; i++) {
-            var segment = path.segments[i];
-            segment.handleIn = segment.handleOut = null;
-        }
-    }
+    addPoint();
+    //smooth = !smooth;
+    //if (!smooth) {
+    //    // If smooth has been turned off, we need to reset
+    //    // the handles of the path:
+    //    for (var i = 0, l = path.segments.length; i < l; i++) {
+    //        var segment = path.segments[i];
+    //        segment.handleIn = segment.handleOut = null;
+    //    }
+    //}
 }
 
 // Reposition the path whenever the window is resized:
