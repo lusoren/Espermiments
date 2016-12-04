@@ -8,13 +8,8 @@ var pathHeight = mousePos.y;
 initWidth = view.size.width;
 
 var paths=[];
-var rand=[];
-pathCounter=0;
-
-
-for (var i=0; i<10;++i){
-    rand[i]=(Math.random()*20)-40;
-}
+var pathCounter=0;
+console.log("ss");
 
 function addPath() {
 
@@ -23,7 +18,7 @@ function addPath() {
         strokeWidth: 5,
 
     });
-    
+
     paths[pathCounter]=path;
     initializePath(paths[pathCounter]);
     
@@ -37,21 +32,17 @@ function initializePath(path) {
 	width = view.size.width;
 	height = view.size.height / 2;
     
-    for(var j=0;j<pathCounter;++j) {
-        
-        path[0].segments = [];
-        
-        for (var i = 1; i < points; i++) {
-            var point = new Point(width / points * i, center.y);
-            path.add(point);
-        }
+	path.segments = [];
     
-        if (Math.random()*2<1) {
-            path.add(width,height);
-        } else {
-            path.add(view.bounds.bottomRight)
-        }
-    }	
+    path.add(view.bounds.bottomLeft);
+    
+	for (var i = 1; i < points; i++) {
+		var point = new Point(width / points * i, center.y);
+		path.add(point);
+	}
+    
+    path.add(width,height);
+	
 }
 
 function flex(path) {
@@ -77,6 +68,8 @@ function onMouseDown(event) {
 
 // Reposition the path whenever the window is resized:
 function onResize(event) {
+    
+    
     for (var i = 0; i < pathCounter; i++) {
 	
         initializePath(paths[i]);
