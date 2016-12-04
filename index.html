@@ -13,7 +13,6 @@ var smooth = true;
 var mousePos = view.center / 2;
 var pathHeight = mousePos.y;
 
-initWidth = view.size.width;
 
 var paths=[];
 var pathCounter=0;
@@ -26,8 +25,15 @@ function addPath() {
         strokeWidth: 5,
 
     });
+    curWidth = view.size.width;
+    var pathObject = {
+        path:path,
+        width:curWidth
+    };
 
-    paths[pathCounter]=path;
+    console.log(pathObject.width);
+    
+    paths[pathCounter]=pathObject;
     initializePath(paths[pathCounter]);
     
     pathCounter++;
@@ -35,7 +41,10 @@ function addPath() {
 }
 
 
-function initializePath(path) {
+function initializePath(pathObject) {
+    
+    var path= pathObject.path;
+    
 	center = view.center;
 	width = view.size.width;
 	height = view.size.height / 2;
@@ -53,10 +62,13 @@ function initializePath(path) {
 	
 }
 
-function flex(path) {
+function flex(pathObject) {
+    
+    var path= pathObject.path;
 	
     pathHeight += (center.y - mousePos.y - pathHeight) / 10;
-    h = initWidth-view.size.width;
+    h = pathObject.width-view.size.width;
+    
     
 	for (var i = 1; i < points; i++) {
 		var sinSeed = h + (i + i % 10) * 100;

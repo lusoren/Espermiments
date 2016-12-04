@@ -2,24 +2,28 @@ var width, height, center;
 var points = 3;
 var smooth = true;
 
-var mousePos = view.center / 2;
-var pathHeight = mousePos.y;
-
-initWidth = view.size.width;
-
 var paths=[];
 var pathCounter=0;
+var moveCounter=0;
+
 console.log("ss");
 
 function addPath() {
 
     var path = new Path({
         strokeColor: 'white',
-        strokeWidth: 5,
-
+        strokeWidth: 2,
     });
+    
+    curWidth = view.size.width;
+    var pathObject = {
+        path:path,
+        width:curWidth
+    };
 
-    paths[pathCounter]=path;
+    console.log(pathObject.width);
+    
+    paths[pathCounter]=pathObject;
     initializePath(paths[pathCounter]);
     
     pathCounter++;
@@ -27,7 +31,10 @@ function addPath() {
 }
 
 
-function initializePath(path) {
+function initializePath(pathObject) {
+    
+    var path= pathObject.path;
+    
 	center = view.center;
 	width = view.size.width;
 	height = view.size.height / 2;
@@ -45,10 +52,13 @@ function initializePath(path) {
 	
 }
 
-function flex(path) {
+function flex(pathObject) {
+    
+    var path= pathObject.path;
 	
     pathHeight += (center.y - mousePos.y - pathHeight) / 10;
-    h = initWidth-view.size.width;
+    h = pathObject.width-view.size.width;
+    
     
 	for (var i = 1; i < points; i++) {
 		var sinSeed = h + (i + i % 10) * 100;
@@ -69,13 +79,16 @@ function onMouseDown(event) {
 // Reposition the path whenever the window is resized:
 function onResize(event) {
     
-    
-    for (var i = 0; i < pathCounter; i++) {
+    movCounter++;
+    if (moveCounter%2==0) {
+        for (var i = 0; i < pathCounter; i++) {
 	
         initializePath(paths[i]);
         flex(paths[i]);
     
     }
+    }
+    
     
 
 }
