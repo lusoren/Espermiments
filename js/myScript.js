@@ -41,13 +41,6 @@ function initializePath(path) {
     
 	path.segments = [];
     
-    if (Math.random()*2<1) {
-       path.add(0,height);
-    } else {
-        path.add(view.bounds.bottomLeft)
-    }
-	
-    
 	for (var i = 1; i < points; i++) {
 		var point = new Point(width / points * i, center.y);
 		path.add(point);
@@ -74,7 +67,7 @@ function flex(path) {
 
 		var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
         
-        yPos =( Math.random()*10)-20 +yPos;
+ 
         path.segments[i].point.y = yPos;
 
 	}

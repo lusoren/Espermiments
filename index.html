@@ -7,7 +7,7 @@
 <!-- Load external PaperScript and associate it with myCanvas -->
 <script type="text/paperscript" canvas="myCanvas">
 var width, height, center;
-var points = 5;
+var points = 3;
 var smooth = true;
 
 var mousePos = view.center / 2;
@@ -16,15 +16,22 @@ var pathHeight = mousePos.y;
 initWidth = view.size.width;
 
 var paths=[];
+var rand=[];
 pathCounter=0;
+
+
+for (var i=0; i<10;++i){
+    rand[i]=(Math.random()*20)-40;
+}
 
 addPath();
 
 function addPath() {
 
     var path = new Path({
-        strokeColor: 'white',
-        strokeWidth: 1
+        strokeColor: 'pink',
+        strokeWidth: 20,
+        opacity: 0.33
     });
     
     paths[pathCounter]=path;
@@ -41,13 +48,7 @@ function initializePath(path) {
 	height = view.size.height / 2;
     
 	path.segments = [];
-    
-    if (Math.random()*2<1) {
-       path.add(view.bounds.topLeft);
-    } else {
-        path.add(view.bounds.bottomLeft)
-    }
-	
+
     
 	for (var i = 1; i < points; i++) {
 		var point = new Point(width / points * i, center.y);
@@ -55,13 +56,13 @@ function initializePath(path) {
 	}
     
     if (Math.random()*2<1) {
-       path.add(view.bounds.topRight);
+       path.add(width,height);
     } else {
         path.add(view.bounds.bottomRight)
     }
 	
     
-
+	path.fullySelected = true;
 }
 
 function flex(path) {
@@ -75,7 +76,7 @@ function flex(path) {
 
 		var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
         
-        yPos =( Math.random()*40)-80 +yPos;
+        yPos =( Math.random()*10)-20 +yPos;
         path.segments[i].point.y = yPos;
 
 	}
@@ -83,7 +84,7 @@ function flex(path) {
 		path.smooth({ type: 'continuous' });
 }
 
-function onMouseDown(event) {
+function onMouseMove(event) {
 	addPath();
 }
 
