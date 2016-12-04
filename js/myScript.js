@@ -16,14 +16,12 @@ for (var i=0; i<10;++i){
     rand[i]=(Math.random()*20)-40;
 }
 
-addPath();
-
 function addPath() {
 
     var path = new Path({
-        strokeColor: 'pink',
-        strokeWidth: 20,
-        opacity: 0.33
+        strokeColor: 'white',
+        strokeWidth: 5,
+
     });
     
     paths[pathCounter]=path;
@@ -39,21 +37,21 @@ function initializePath(path) {
 	width = view.size.width;
 	height = view.size.height / 2;
     
-	path.segments = [];
+    for(var j=0;j<pathCounter;++j) {
+        
+        path[0].segments = [];
+        
+        for (var i = 1; i < points; i++) {
+            var point = new Point(width / points * i, center.y);
+            path.add(point);
+        }
     
-	for (var i = 1; i < points; i++) {
-		var point = new Point(width / points * i, center.y);
-		path.add(point);
-	}
-    
-    if (Math.random()*2<1) {
-       path.add(width,height);
-    } else {
-        path.add(view.bounds.bottomRight)
-    }
-	
-    
-	path.fullySelected = true;
+        if (Math.random()*2<1) {
+            path.add(width,height);
+        } else {
+            path.add(view.bounds.bottomRight)
+        }
+    }	
 }
 
 function flex(path) {
@@ -64,18 +62,15 @@ function flex(path) {
 	for (var i = 1; i < points; i++) {
 		var sinSeed = h + (i + i % 10) * 100;
 		var sinHeight = Math.sin(sinSeed / 200) * height;
-
 		var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
-        
  
         path.segments[i].point.y = yPos;
-
 	}
 	if (smooth)
 		path.smooth({ type: 'continuous' });
 }
 
-function onMouseMove(event) {
+function onMouseDown(event) {
 	addPath();
 }
 
