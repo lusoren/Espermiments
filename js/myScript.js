@@ -9,7 +9,7 @@ var paths=[];
 var pathCounter=0;
 
 var drawP = new Path({
-    fillColor: 'red',
+    strokeColor: 'red',
     strokeWidth: 2,
 }); 
 
@@ -45,6 +45,7 @@ function addPath() {
     paths[pathCounter]=pathObject;
     initializePath(paths[pathCounter]);
     drawP.add(pathObject.width,pathObject.height);
+    drawP.closed = true;
     pathCounter++;
 }
 
@@ -66,7 +67,8 @@ function initializePath(pathObject) {
 		path.add(point);
 	}
     
-    path.add(pathObject.width,pathObject.height);	
+    path.add(pathObject.width,pathObject.height);
+    
 }
 
 function flex(pathObject, count) {
@@ -95,10 +97,10 @@ function onResize(event) {
         addPath();
     }
     
-    //for (var i = 0; i < pathCounter; i++) {
-    //
-    //    initializePath(paths[i]);
-    //    flex(paths[i],event.count);
-    //
-    //}
+    for (var i = 0; i < pathCounter; i++) {
+    
+        initializePath(paths[i]);
+        flex(paths[i],event.count);
+    
+    }
 }
