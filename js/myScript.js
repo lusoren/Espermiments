@@ -8,11 +8,17 @@ var pathHeight = mousePos.y;
 var paths=[];
 var pathCounter=0;
 
+var drawP = new Path({
+    fillColor: 'red',
+    strokeWidth: 2,
+}); 
+
 var moveCounter=0;
 var addTracker=0;
 
 console.log("started");
 addPath();
+
 
 
 function addPath() {
@@ -23,6 +29,7 @@ function addPath() {
     });
     
     curWidth = view.size.width;
+    curHeight = view.size.height;
     
     var ritRand=Math.floor(Math.random()*3);
     var letRand=Math.floor(Math.random()*3);
@@ -30,17 +37,14 @@ function addPath() {
     var pathObject = {
         path:path,
         width:curWidth,
+        height:curHeight,
         right:ritRand,
         left:letRand
     };
-
-    console.log(pathObject.width);
-    console.log(pathObject.left);
-    console.log(pathObject.right);
     
     paths[pathCounter]=pathObject;
     initializePath(paths[pathCounter]);
-    
+    drawP.add(pathObject.width,pathObject.height);
     pathCounter++;
 }
 
@@ -54,18 +58,15 @@ function initializePath(pathObject) {
 	height = view.size.height / 2;
     
 	path.segments = [];
-    
 
-
-    path.add(width,(pathObject.right)*height);
+    path.add(view.bounds.topLeft);
     
 	for (var i = 1; i < points; i++) {
 		var point = new Point(width / points * i, center.y);
 		path.add(point);
 	}
     
-    path.add(width,(pathObject.left)*height);
-	
+    path.add(pathObject.width,pathObject.height);	
 }
 
 function flex(pathObject, count) {
@@ -76,7 +77,7 @@ function flex(pathObject, count) {
     h = pathObject.width-view.size.width;
     
 	for (var i = 1; i < points; i++) {
-		var sinSeed = count - h + (i + i % 10) * 100;
+		var sinSeed = h + (i + i % 10) * 100;
 		var sinHeight = Math.sin(sinSeed / 200) * height;
 		var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
  
@@ -86,19 +87,6 @@ function flex(pathObject, count) {
 		path.smooth({ type: 'continuous' });
 }
 
-
-
-// Reposition the path whenever the window is resized:
-function onFrame(event) {
-    
-    for (var i = 0; i < pathCounter; i++) {
-	
-        initializePath(paths[i]);
-        flex(paths[i],event.count);
-    
-    }
-}
-
 function onResize(event) {
 	moveCounter++
     if ((moveCounter-addTracker)>100) {
@@ -106,4 +94,11 @@ function onResize(event) {
         addTracker=moveCounter;
         addPath();
     }
+    
+    //for (var i = 0; i < pathCounter; i++) {
+    //
+    //    initializePath(paths[i]);
+    //    flex(paths[i],event.count);
+    //
+    //}
 }
