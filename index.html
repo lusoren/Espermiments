@@ -63,32 +63,20 @@ function initializePath(pathObject) {
     
 	path.segments = [];
     
-    if (pathObject.left==0) {
-        path.add(view.bounds.bottomLeft);
-        
-    } else if (pathObject.left==1) {
-        path.add(0,height);
-        
-    } else {
-        path.add(view.bounds.topLeft);
-    }
+
+
+    path.add(0,(pathObject.right)*height);
     
 	for (var i = 1; i < points; i++) {
 		var point = new Point(width / points * i, center.y);
 		path.add(point);
 	}
     
-    if (pathObject.right==0) {
-        path.add(view.bounds.bottomRight);
-    } else if (pathObject.right==1) {
-        path.add(width,height);
-    } else {
-        path.add(view.bounds.topRight);
-    }
+    path.add(width,(pathObject.left)*height);
 	
 }
 
-function flex(pathObject) {
+function flex(pathObject, count) {
     
     var path= pathObject.path;
 	
@@ -96,7 +84,7 @@ function flex(pathObject) {
     h = pathObject.width-view.size.width;
     
 	for (var i = 1; i < points; i++) {
-		var sinSeed = h + (i + i % 10) * 100;
+		var sinSeed = count - h + (i + i % 10) * 100;
 		var sinHeight = Math.sin(sinSeed / 200) * height;
 		var yPos = Math.sin(sinSeed / 100) * sinHeight + height;
  
@@ -106,29 +94,26 @@ function flex(pathObject) {
 		path.smooth({ type: 'continuous' });
 }
 
-//function onMouseDown(event) {
-//	addPath();
-//}
 
 
 // Reposition the path whenever the window is resized:
-function onResize(event) {
-    moveCounter++
+function onFrame(event) {
+    
+    for (var i = 0; i < pathCounter; i++) {
+	
+        initializePath(paths[i]);
+        flex(paths[i],event.count);
+    
+    }
+}
 
+function onResize(event) {
+	moveCounter++
     if ((moveCounter-addTracker)>100) {
         console.log("added");
         addTracker=moveCounter;
         addPath();
     }
-    
-    for (var i = 0; i < pathCounter; i++) {
-	
-        initializePath(paths[i]);
-        flex(paths[i]);
-    
-    }
-    
-
 }
 </script>
 </head>
