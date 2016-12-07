@@ -8,10 +8,11 @@ var pathHeight = mousePos.y;
 var paths=[];
 var pathCounter=0;
 
-var drawP = new Path({
-    strokeColor: 'red',
-    strokeWidth: 2,
-}); 
+//var drawP = new Path({
+//    strokeColor: 'white',
+//    fillColor: 'white',
+//    strokeWidth: 2,
+//}); 
 
 var moveCounter=0;
 var addTracker=0;
@@ -44,8 +45,8 @@ function addPath() {
     
     paths[pathCounter]=pathObject;
     initializePath(paths[pathCounter]);
-    drawP.add(pathObject.width,pathObject.height);
-    drawP.closed = true;
+    //drawP.add(pathObject.width,pathObject.height);
+    //drawP.closed = true;
     pathCounter++;
 }
 
@@ -63,7 +64,7 @@ function initializePath(pathObject) {
     path.add(view.bounds.topLeft);
     
 	for (var i = 1; i < points; i++) {
-		var point = new Point(width / points * i, center.y);
+		var point = new Point(pathObject.width / points * i, center.y);
 		path.add(point);
 	}
     
